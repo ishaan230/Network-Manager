@@ -71,16 +71,10 @@ def index():
 
 <body>
     <header>
-        <p>Welcome to!</p>
-        <h1>Network Manager</h1>
+        <h1>View Important Network Details</h1>
     </header> <br>
-  <button><a href="http://127.0.0.1:5000/home">Check Network Stats</a></button>
+  <button style="background-color: #4caf50; color: white; border: none; padding: 10px 20px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer; border-radius: 4px;"><a href="http://127.0.0.1:5000/home" style="color: inherit; text-decoration: none;">Check Network Stats</a></button>
 
-    <section>
-        <h2>Contact Information</h2>
-        <p>Email: ishaan@gmail.com</p>
-        <p>Phone: +1234567890</p>
-    </section>
 
     <footer>
         All rights reserved.
@@ -105,12 +99,12 @@ def home():
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home Page</title>
+    <title>Basic Stats</title>
 </head>
 
 <body style="font-family: 'Arial', sans-serif; margin: 20px; padding: 20px; background-color: #f8f8f8;">
 
-    <h1 style="color: #333; text-align: center;">Home Page</h1>
+    <h1 style="color: #333; text-align: center;">Basic Stats</h1>
 
     <p><b style="color: #555;">Connection Status:</b> {status}</p>
     
@@ -120,9 +114,10 @@ def home():
     
     <p><b style="color: #555;">MAC of Interface:</b> {mac}</p>
 
-    <button style="background-color: #4caf50; color: white; border: none; padding: 10px 20px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer; border-radius: 4px;">
-        <a href="speedcheck" style="color: white; text-decoration: none;">Check Speed</a>
+    <button style="background-color: #4caf50; color: white; border: none; padding: 10px 20px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer; border-radius: 4px;" onclick="alert('Loading...')">
+        <a href="speedcheck" style="color: white; text-decoration: none;" onclick="document.getElementById('ptag').innerHTML='Loading...'">Check Speed</a>
     </button>
+    <p id="ptag"><p>
 
 </body>
 
