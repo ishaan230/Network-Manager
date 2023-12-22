@@ -4,13 +4,14 @@ from requests import get
 import speedtest   
 import os
 import uuid
+from networkdevices import detect_devices
 
 
 app = Flask(__name__)
 
 def conn_status():
     status = "Disconnected"
-    return_code = os.system("ping 8.8.8.8")
+    return_code = os.system("ping 8.8.8.8 -n 2")
     if return_code == 0:
         status = "Connected"
     else:
@@ -87,11 +88,18 @@ def index():
 
 @app.route('/home')
 def home():
+    status = conn_status()
+    print(status)
+    mac = get_mac()
+    if status == "Disconnected":
+        return f"""
+        <p><b style="color: #555;">Connection Status:</b> {status}</p>
+    <p><b style="color: #555;">MAC of Interface:</b> {mac}</p>
+    <p><b>Connect to a network for more options</b></p>
+        """
     ip = get_ip()
     publicIp = get('https://api.ipify.org').content.decode('utf8')
     print("Home")
-    status = conn_status()
-    mac = get_mac()
     return f"""
     <!DOCTYPE html>
 <html lang="en">
@@ -114,11 +122,14 @@ def home():
     
     <p><b style="color: #555;">MAC of Interface:</b> {mac}</p>
 
-    <button style="background-color: #4caf50; color: white; border: none; padding: 10px 20px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer; border-radius: 4px;" onclick="alert('Loading...')">
+    <button style="background-color: #4caf50; color: white; border: none; padding: 10px 20px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer; border-radius: 4px;">
         <a href="speedcheck" style="color: white; text-decoration: none;" onclick="document.getElementById('ptag').innerHTML='Loading...'">Check Speed</a>
     </button>
     <p id="ptag"><p>
-
+    <button style="background-color: #4caf50; color: white; border: none; padding: 10px 20px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer; border-radius: 4px;">
+        <a href="/devices" style="color: white; text-decoration: none;" onclick="document.getElementById('ptag2').innerHTML='Loading...'">Scan Devices on Network</a>
+    </button>
+    <p id="ptag2"><p>
 </body>
 
 </html>
@@ -140,6 +151,15 @@ def speed():
     </div>
 """
 
+@app.route('/devices')
+def devices():
+    print("/devices Endpoint Triggered...")
+    ipsmac = detect_devices()
+    print(ipsmac)
+    return f"""
+    <h3>Devices Found: </h3>
+    { ipsmac }
+"""
 
 if __name__ == '__main__':
     app.run(debug=True)
